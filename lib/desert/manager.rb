@@ -41,7 +41,8 @@ module Desert
         dependencies.autoload_paths.reverse_each do |path|
           paths << File.expand_path(path)
         end
-      end      paths.uniq!
+      end
+      paths.uniq!
       paths
     end
 
