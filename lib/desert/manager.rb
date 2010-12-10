@@ -33,10 +33,15 @@ module Desert
         paths << File.join(component_root, 'app','sweepers')
         paths << File.join(component_root, 'lib')
       end
-      dependencies.autoload_paths.reverse_each do |path|
-        paths << File.expand_path(path)
-      end
-      paths.uniq!
+      if Desert::VersionChecker.rails_version_is_below_2310?
+        dependencies.load_paths.reverse_each do |path|
+          paths << File.expand_path(path)
+        end
+      else
+        dependencies.autoload_paths.reverse_each do |path|
+          paths << File.expand_path(path)
+        end
+      end      paths.uniq!
       paths
     end
 

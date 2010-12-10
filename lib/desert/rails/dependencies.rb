@@ -18,7 +18,11 @@ dependencies.module_eval do
   alias_method_chain :load_missing_constant, :desert
 
   def load_once_path?(path)
-    autoload_once_paths.any? { |base| File.expand_path(path).starts_with? File.expand_path(base) }
+    if Desert::VersionChecker.rails_version_is_below_2310?
+      load_once_paths.any? { |base| File.expand_path(path).starts_with? File.expand_path(base) }
+    else
+      autoload_once_paths.any? { |base| File.expand_path(path).starts_with? File.expand_path(base) }
+    end
   end
 
   def depend_on_with_desert(file_name, swallow_load_errors = false)
